@@ -1,118 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
 
-        section {
-            height: 100vh;
-            width: 100vw;
-        }
+    section {
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
 
-        #Leading {
-            background-color: black;
-        }
+    #Leading {
+      height: 200vh;
+      background-color: black;
+    }
 
-        #Video1, #Video2 {
-            background-color: white; /* 设置视频背景颜色 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
+    #Video1, #Video2 {
+      height: 100vh;
+      background-color: black;
+      display: none;
+    }
 
-        video {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            visibility: hidden;
-        }
+    #Middle {
+      height: 200vh;
+      background-color: black;
+    }
 
-        #Middle {
-            background-color: white; /* 设置视频背景颜色 */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    #Ending {
+      height: 100vh;
+      background-color: black;
+    }
 
-        #Ending {
-            background-color: black;
-        }
-    </style>
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body>
-    <section id="Leading"></section>
-    <section id="Video1">
-        <video width="640" height="360" autoplay muted loop>
-            <source src = "https://github.com/NTU-Luke2021/assignment5.github.io/blob/main/vids/earth.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </section>
-    <section id="Middle">
-        <video width="640" height="360" autoplay muted loop>
-            <source src="video1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </section>
-    <section id="Video2">
-        <video width="640" height="360" autoplay muted loop>
-            <source src="https://github.com/NTU-Luke2021/assignment5.github.io/blob/main/vids/galaxy.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </section>
-    <section id="Ending"></section>
+  <section id="Leading">
+    <h1>Leading Section</h1>
+  </section>
 
-    <script>
-        const video1 = document.querySelector("#Video1 video");
-        const video2 = document.querySelector("#Video2 video");
-        const middle = document.querySelector("#Middle");
-        const ending = document.querySelector("#Ending");
+  <section id="Video1">
+    <video autoplay loop muted>
+      <source src="https://github.com/NTU-Luke2021/assignment5.github.io/blob/main/vids/earth.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </section>
 
-        let playing = false;
+  <section id="Middle">
+    <h1>Middle Section</h1>
+  </section>
 
-        // 当页面滚动时触发
-        window.addEventListener("scroll", () => {
-            // 获取视口高度
-            const viewportHeight = window.innerHeight;
+  <section id="Video2">
+    <video autoplay loop muted>
+      <source src="https://github.com/NTU-Luke2021/assignment5.github.io/blob/main/vids/galaxy.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </section>
 
-            // 获取中间部分的高度
-            const middleHeight = middle.clientHeight;
+  <section id="Ending">
+    <h1>Ending Section</h1>
+  </section>
 
-            // 计算滚动位置
-            const scrollPosition = window.scrollY;
+  <script>
+    const video1 = document.querySelector("#Video1 video");
+    const video2 = document.querySelector("#Video2 video");
 
-            // 检查是否进入Video1
-            if (scrollPosition >= viewportHeight && !playing) {
-                video1.style.visibility = "visible";
-                video1.play();
-                playing = true;
-            }
+    window.addEventListener("scroll", () => {
+      const leadingSection = document.querySelector("#Leading");
+      const middleSection = document.querySelector("#Middle");
+      const endingSection = document.querySelector("#Ending");
+      const scrollTop = window.scrollY;
 
-            // 检查是否进入Middle
-            if (scrollPosition >= viewportHeight + middleHeight && playing) {
-                video1.pause();
-                playing = false;
-            }
-
-            // 检查是否进入Video2
-            if (scrollPosition >= 2 * viewportHeight + middleHeight && !playing) {
-                video2.style.visibility = "visible";
-                video2.play();
-                playing = true;
-            }
-
-            // 检查是否进入Ending
-            if (scrollPosition >= 3 * viewportHeight + middleHeight && playing) {
-                video2.pause();
-                playing = false;
-            }
-        });
-    </script>
+      if (scrollTop >= leadingSection.offsetTop && scrollTop < middleSection.offsetTop) {
+        video1.style.display = "block";
+        video2.style.display = "none";
+        video1.play();
+        video2.pause();
+      } else if (scrollTop >= middleSection.offsetTop && scrollTop < endingSection.offsetTop) {
+        video1.style.display = "none";
+        video2.style.display = "block";
+        video1.pause();
+        video2.play();
+      } else {
+        video1.style.display = "none";
+        video2.style.display = "none";
+        video1.pause();
+        video2.pause();
+      }
+    });
+  </script>
 </body>
 </html>
